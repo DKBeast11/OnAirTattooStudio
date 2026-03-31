@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#0a0a08" />
+<title>OnAir Studio · Propuesta Digital</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink:      #0a0a08;
+    --coal:     #111110;
+    --graphite: #1c1c1a;
+    --ash:      #2e2e2b;
+    --mist:     #888880;
+    --paper:    #e8e4dc;
+    --cream:    #f4f0e6;
+    --red:      #c0392b;
+    --gold:     #b8943f;
+    --ff-d: 'Bebas Neue', sans-serif;
+    --ff-s: 'DM Serif Display', serif;
+    --ff-m: 'DM Mono', monospace;
+  }
+
+  html, body {
+    width: 100%; height: 100%;
+    overflow: hidden;
+    background: var(--ink);
+    color: var(--cream);
+    font-family: var(--ff-m);
+    -webkit-text-size-adjust: 100%;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  /* ── NOISE ── */
+  body::after {
+    content: '';
+    position: fixed; inset: 0; z-index: 9000;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    opacity: .3;
+  }
+
+  /* ── DECK ── */
+  .deck {
+    position: fixed; inset: 0;
+    display: flex;
+  }
+
+  /* ── SLIDE ── */
+  .slide {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    justify-content: center;
+    padding: 80px 10vw;
+    opacity: 0;
+    transform: translateX(60px);
+    transition: opacity .55s cubic-bezier(.4,0,.2,1), transform .55s cubic-bezier(.4,0,.2,1);
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .slide.active {
+    opacity: 1; transform: translateX(0);
+    pointer-events: all;
+  }
+  .slide.exit {
+    opacity: 0; transform: translateX(-60px);
+  }
+
+  /* ── NAV BAR ── */
+  .topbar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 20px 10vw;
+    background: linear-gradient(to bottom, rgba(10,10,8,.9) 0%, transparent 100%);
+  }
+  .topbar-logo {
+    font-family: var(--ff-d);
+    font-size: 1.6rem; letter-spacing: .12em;
+    color: var(--cream); text-decoration: none;
+  }
+  .topbar-logo span { color: var(--red); }
+  .slide-counter {
+    font-size: .65rem; letter-spacing: .25em;
+    text-transform: uppercase; color: var(--mist);
+  }
+
+  /* ── DOTS ── */
+  .dots {
+    position: fixed; bottom: 28px; left: 50%;
+    transform: translateX(-50%);
+    display: flex; gap: 8px; z-index: 100;
+  }
+  .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--ash);
+    transition: background .3s, width .3s;
+    cursor: pointer;
+  }
+  .dot.active { background: var(--red); width: 22px; border-radius: 3px; }
+
+  /* ── NAV ARROWS ── */
+  .arrow {
+    position: fixed; top: 50%; z-index: 100;
+    transform: translateY(-50%);
+    background: none; border: 1px solid var(--ash);
+    color: var(--mist); width: 42px; height: 42px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem; cursor: pointer;
+    transition: all .2s;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .arrow:hover { border-color: var(--red); color: var(--red); }
+  .arrow-left  { left:  2vw; }
+  .arrow-right { right: 2vw; }
+  .arrow.hidden { opacity: 0; pointer-events: none; }
+
+  @media (max-width: 768px) {
+    .arrow { display: none; }
+    .topbar { padding: 16px 6vw; }
+    .slide { padding: 70px 6vw 60px; }
+  }
+
+  /* ═══════════════════════════════════
+     SLIDE CONTENT STYLES
+  ═══════════════════════════════════ */
+
+  /* ── TAGS ── */
+  .stag {
+    font-size: .65rem; letter-spacing: .35em;
+    text-transform: uppercase; color: var(--red);
+    margin-bottom: 16px; display: block;
+  }
+
+  /* ── HEADLINES ── */
+  .h1 {
+    font-family: var(--ff-d);
+    font-size: clamp(3.5rem, 8vw, 8rem);
+    line-height: .92; letter-spacing: .03em;
+    color: var(--cream);
+  }
+  .h1 em {
+    font-style: normal; color: transparent;
+    -webkit-text-stroke: 1px var(--paper);
+  }
+  .h2 {
+    font-family: var(--ff-d);
+    font-size: clamp(2.5rem, 5vw, 5.5rem);
+    line-height: .95; letter-spacing: .03em;
+    color: var(--cream);
+  }
+  .h2 em { font-style: normal; color: var(--red); }
+  .h3 {
+    font-family: var(--ff-s);
+    font-style: italic;
+    font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+    color: var(--mist); line-height: 1.5;
+    margin-top: 20px;
+  }
+
+  /* ── BODY TEXT ── */
+  .body {
+    font-size: clamp(.75rem, 1.5vw, .88rem);
+    line-height: 1.85; color: var(--mist);
+    max-width: 640px; margin-top: 16px;
+  }
+
+  /* ── STAT ROW ── */
+  .stats {
+    display: flex; gap: clamp(24px, 4vw, 64px);
+    flex-wrap: wrap; margin-top: 48px;
+  }
+  .stat { display: flex; flex-direction: column; gap: 4px; }
+  .stat-num {
+    font-family: var(--ff-d);
+    font-size: clamp(2.8rem, 6vw, 6rem);
+    line-height: 1; color: var(--red);
+    letter-spacing: .02em;
+  }
+  .stat-num.gold { color: var(--gold); }
+  .stat-label {
+    font-size: .68rem; letter-spacing: .2em;
+    text-transform: uppercase; color: var(--mist);
+    max-width: 160px; line-height: 1.4;
+  }
+
+  /* ── COMPARISON TABLE ── */
+  .compare {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 3px; margin-top: 40px;
+    width: 100%; max-width: 900px;
+  }
+  .compare-col { display: flex; flex-direction: column; gap: 3px; }
+  .compare-head {
+    font-family: var(--ff-d);
+    font-size: 1.1rem; letter-spacing: .1em;
+    padding: 14px 20px;
+  }
+  .compare-head.bad  { background: var(--graphite); color: var(--mist); }
+  .compare-head.good { background: var(--red);       color: var(--cream); }
+  .compare-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 20px;
+    font-size: clamp(.7rem, 1.4vw, .8rem);
+    line-height: 1.4;
+  }
+  .compare-row.bad  { background: var(--graphite); color: var(--mist); }
+  .compare-row.good { background: var(--ash);      color: var(--paper); }
+  .compare-row .icon { font-size: 1rem; flex-shrink: 0; }
+
+  @media (max-width: 600px) {
+    .compare { grid-template-columns: 1fr; }
+    .compare-col:first-child { display: none; }
+  }
+
+  /* ── FEATURE GRID ── */
+  .feat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 3px; margin-top: 40px; width: 100%; max-width: 960px;
+  }
+  .feat {
+    background: var(--graphite);
+    padding: 24px 22px;
+    border-left: 3px solid transparent;
+    transition: border-color .2s;
+  }
+  .feat:hover { border-left-color: var(--red); }
+  .feat-icon { font-size: 1.6rem; margin-bottom: 12px; }
+  .feat-title {
+    font-family: var(--ff-d);
+    font-size: 1.1rem; letter-spacing: .06em;
+    color: var(--cream); margin-bottom: 6px;
+  }
+  .feat-desc {
+    font-size: .72rem; line-height: 1.65;
+    color: var(--mist);
+  }
+
+  /* ── DB CARDS ── */
+  .db-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 3px; margin-top: 40px; width: 100%; max-width: 1000px;
+  }
+  .db-card { background: var(--graphite); padding: 28px 24px; }
+  .db-card-tag {
+    font-size: .62rem; letter-spacing: .28em;
+    text-transform: uppercase; color: var(--red);
+    margin-bottom: 10px;
+  }
+  .db-card-title {
+    font-family: var(--ff-d);
+    font-size: 1.6rem; letter-spacing: .06em;
+    color: var(--cream); margin-bottom: 14px;
+  }
+  .db-list {
+    list-style: none; display: flex;
+    flex-direction: column; gap: 7px;
+  }
+  .db-list li {
+    font-size: .72rem; line-height: 1.5;
+    color: var(--mist); padding-left: 14px;
+    position: relative;
+  }
+  .db-list li::before {
+    content: '—';
+    position: absolute; left: 0;
+    color: var(--red); font-size: .65rem;
+  }
+
+  /* ── ROADMAP ── */
+  .roadmap {
+    display: flex; flex-direction: column;
+    gap: 3px; margin-top: 36px;
+    max-width: 700px;
+  }
+  .rm-step {
+    display: flex; align-items: flex-start; gap: 20px;
+    background: var(--graphite); padding: 20px 22px;
+    border-left: 3px solid var(--ash);
+    transition: border-color .2s;
+  }
+  .rm-step:hover { border-left-color: var(--gold); }
+  .rm-num {
+    font-family: var(--ff-d);
+    font-size: 2rem; color: var(--ash);
+    line-height: 1; flex-shrink: 0; width: 36px;
+    transition: color .2s;
+  }
+  .rm-step:hover .rm-num { color: var(--gold); }
+  .rm-info {}
+  .rm-title {
+    font-family: var(--ff-d);
+    font-size: 1.1rem; letter-spacing: .06em;
+    color: var(--cream); margin-bottom: 4px;
+  }
+  .rm-desc {
+    font-size: .72rem; line-height: 1.6; color: var(--mist);
+  }
+  .rm-tag {
+    display: inline-block; margin-top: 6px;
+    font-size: .6rem; letter-spacing: .2em;
+    text-transform: uppercase; color: var(--gold);
+    border: 1px solid var(--gold); padding: 2px 8px;
+  }
+
+  /* ── COVER DECO ── */
+  .cover-deco {
+    position: absolute; right: 8vw; top: 50%;
+    transform: translateY(-50%);
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 3px; width: clamp(200px, 28vw, 420px);
+    opacity: .55; pointer-events: none;
+  }
+  .cover-deco-cell {
+    background: var(--graphite);
+    aspect-ratio: 1;
+  }
+  .cover-deco-cell:nth-child(1) { background: var(--ash); }
+  .cover-deco-cell:nth-child(3) { background: var(--red); opacity: .4; }
+  @media (max-width: 900px) { .cover-deco { display: none; } }
+
+  /* ── CLOSING ── */
+  .closing-line {
+    width: 1px; height: 60px;
+    background: linear-gradient(to bottom, var(--red), transparent);
+    margin-bottom: 24px;
+  }
+  .contact-list {
+    list-style: none; display: flex;
+    flex-direction: column; gap: 8px;
+    margin-top: 24px;
+  }
+  .contact-list li {
+    font-size: .78rem; letter-spacing: .12em;
+    color: var(--mist);
+  }
+  .contact-list li span { color: var(--cream); }
+
+  /* ── DIVIDER ── */
+  .divider {
+    width: 40px; height: 1px;
+    background: var(--red); margin: 20px 0;
+  }
+
+  /* ── HIGHLIGHT ── */
+  .hl-red  { color: var(--red); }
+  .hl-gold { color: var(--gold); }
+  .hl-cream{ color: var(--cream); }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <span class="topbar-logo">On<span>AIR</span></span>
+  <span class="slide-counter" id="counter">01 / 10</span>
+</div>
+
+<!-- NAV ARROWS -->
+<button class="arrow arrow-left hidden" id="arrowLeft" onclick="go(-1)" aria-label="Anterior">‹</button>
+<button class="arrow arrow-right" id="arrowRight" onclick="go(1)" aria-label="Siguiente">›</button>
+
+<!-- DOTS -->
+<div class="dots" id="dots"></div>
+
+<!-- ══════════════════════════════
+     SLIDES
+══════════════════════════════ -->
+<div class="deck" id="deck">
+
+  <!-- ── 01 PORTADA ── -->
+  <div class="slide active" data-index="0">
+    <div class="cover-deco">
+      <div class="cover-deco-cell"></div>
+      <div class="cover-deco-cell"></div>
+      <div class="cover-deco-cell"></div>
+      <div class="cover-deco-cell"></div>
+    </div>
+    <span class="stag">// Propuesta digital · 2026</span>
+    <h1 class="h1">TU PRESENCIA<br/>DIGITAL,<br/><em>TU MEJOR</em><br/><em>ARTISTA.</em></h1>
+    <div class="divider"></div>
+    <p class="body">
+      Cómo una página web transforma OnAir Studio en el estudio de referencia de Las Palmas — y el sistema de gestión que lo hace escalar.
+    </p>
+  </div>
+
+  <!-- ── 02 LA REALIDAD ── -->
+  <div class="slide" data-index="1">
+    <span class="stag">// 01 — El mercado hoy</span>
+    <h2 class="h2">LOS CLIENTES<br/><em>BUSCAN ONLINE</em><br/>ANTES DE LLAMAR.</h2>
+    <div class="stats">
+      <div class="stat">
+        <span class="stat-num">87<span style="font-size:.45em">%</span></span>
+        <span class="stat-label">busca el negocio en Google antes de visitar</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num gold">76<span style="font-size:.45em">%</span></span>
+        <span class="stat-label">contacta ese mismo día si la web les convence</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">60<span style="font-size:.45em">%</span></span>
+        <span class="stat-label">descarta directamente un negocio sin presencia web</span>
+      </div>
+    </div>
+    <p class="body" style="margin-top:28px;">
+      Fuente: Google / BrightLocal Consumer Survey 2025. El tatuaje es una decisión de alta implicación — los clientes investigan antes de confiar su piel a alguien.
+    </p>
+  </div>
+
+  <!-- ── 03 COMPARATIVA ── -->
+  <div class="slide" data-index="2">
+    <span class="stag">// 02 — Sin web vs con web</span>
+    <h2 class="h2">LA DIFERENCIA<br/>ES <em>VISIBLE</em>.</h2>
+    <div class="compare">
+      <div class="compare-col">
+        <div class="compare-head bad">✕ &nbsp;Sin página web</div>
+        <div class="compare-row bad"><span class="icon">○</span> Invisible en Google y Maps</div>
+        <div class="compare-row bad"><span class="icon">○</span> Reservas solo por DM o llamada</div>
+        <div class="compare-row bad"><span class="icon">○</span> Portafolio disperso en Instagram</div>
+        <div class="compare-row bad"><span class="icon">○</span> Sin control sobre la primera impresión</div>
+        <div class="compare-row bad"><span class="icon">○</span> Difícil de compartir o recomendar</div>
+        <div class="compare-row bad"><span class="icon">○</span> Dependencia total de algoritmos</div>
+      </div>
+      <div class="compare-col">
+        <div class="compare-head good">✓ &nbsp;Con OnAir Studio web</div>
+        <div class="compare-row good"><span class="icon">●</span> Posicionamiento en Google local</div>
+        <div class="compare-row good"><span class="icon">●</span> Reservas online 24/7 sin intermediarios</div>
+        <div class="compare-row good"><span class="icon">●</span> Galería profesional y filtrable</div>
+        <div class="compare-row good"><span class="icon">●</span> Imagen de marca bajo tu control</div>
+        <div class="compare-row good"><span class="icon">●</span> URL directa para compartir</div>
+        <div class="compare-row good"><span class="icon">●</span> Canal propio, sin depender de redes</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 04 VENTAJAS ── -->
+  <div class="slide" data-index="3">
+    <span class="stag">// 03 — Ventajas clave</span>
+    <h2 class="h2">6 RAZONES<br/>QUE <em>IMPORTAN</em>.</h2>
+    <div class="feat-grid">
+      <div class="feat">
+        <div class="feat-icon">🕐</div>
+        <div class="feat-title">Disponible 24/7</div>
+        <div class="feat-desc">Un cliente puede ver tu trabajo y reservar a las 2 de la mañana. Sin que nadie tenga que atender.</div>
+      </div>
+      <div class="feat">
+        <div class="feat-icon">📍</div>
+        <div class="feat-title">SEO Local</div>
+        <div class="feat-desc">Apareces cuando alguien busca "tatuaje Las Palmas" en Google. Tráfico gratuito y cualificado.</div>
+      </div>
+      <div class="feat">
+        <div class="feat-icon">🎨</div>
+        <div class="feat-title">Galería profesional</div>
+        <div class="feat-desc">Tu obra presentada en contexto premium, no enterrada entre reels y publicidad de terceros.</div>
+      </div>
+      <div class="feat">
+        <div class="feat-icon">🤝</div>
+        <div class="feat-title">Confianza y credibilidad</div>
+        <div class="feat-desc">Una web cuidada transmite seriedad. Los clientes de alta valor lo perciben antes de entrar.</div>
+      </div>
+      <div class="feat">
+        <div class="feat-icon">📅</div>
+        <div class="feat-title">Reservas sin fricción</div>
+        <div class="feat-desc">El cliente elige artista, fecha y hora. Menos mensajes de ida y vuelta, más tiempo para tatuar.</div>
+      </div>
+      <div class="feat">
+        <div class="feat-icon">🏆</div>
+        <div class="feat-title">Diferenciación</div>
+        <div class="feat-desc">La mayoría de estudios locales no tienen una web de este nivel. Es ventaja competitiva directa.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 05 IMPACTO ── -->
+  <div class="slide" data-index="4">
+    <span class="stag">// 04 — Impacto en negocio</span>
+    <h2 class="h2">NÚMEROS<br/>QUE <em>HABLAN</em>.</h2>
+    <div class="stats" style="margin-top:36px;">
+      <div class="stat">
+        <span class="stat-num gold">+40<span style="font-size:.4em">%</span></span>
+        <span class="stat-label">más reservas en negocios locales con web optimizada vs solo redes sociales</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">3×</span>
+        <span class="stat-label">más probabilidad de ser elegido frente a competencia sin presencia web</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num gold">0€</span>
+        <span class="stat-label">coste por visita orgánica una vez posicionado en Google local</span>
+      </div>
+    </div>
+    <div class="divider" style="margin-top:36px;"></div>
+    <p class="body">
+      Una reserva media en un estudio premium oscila entre 150€ y 600€. Con una sola reserva adicional mensual procedente de la web, la inversión digital se amortiza completamente.
+    </p>
+  </div>
+
+  <!-- ── 06 BASE DE DATOS - INTRO ── -->
+  <div class="slide" data-index="5">
+    <span class="stag">// 05 — El siguiente nivel</span>
+    <h2 class="h2">CONOCER<br/>TU <em>ESTUDIO</em><br/>POR DENTRO.</h2>
+    <div class="divider"></div>
+    <h3 class="h3">La web es el escaparate. La base de datos es el motor.</h3>
+    <p class="body">
+      Un sistema de gestión conectado te permite saber en todo momento quiénes son tus clientes, qué hace cada artista, qué trabajos están en curso y cuánto está generando el estudio — todo desde el móvil.
+    </p>
+    <div class="stats" style="margin-top:36px;">
+      <div class="stat">
+        <span class="stat-num">3</span>
+        <span class="stat-label">módulos principales: Clientes · Artistas · Trabajos</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num gold">1</span>
+        <span class="stat-label">panel único para gestionar todo el estudio</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 07 CLIENTES ── -->
+  <div class="slide" data-index="6">
+    <span class="stag">// 06 — Módulo 1</span>
+    <h2 class="h2">GESTIÓN<br/>DE <em>CLIENTES</em>.</h2>
+    <div class="db-grid">
+      <div class="db-card">
+        <div class="db-card-tag">Ficha de cliente</div>
+        <div class="db-card-title">Perfil completo</div>
+        <ul class="db-list">
+          <li>Nombre, contacto, fecha de nacimiento</li>
+          <li>Historial de visitas al estudio</li>
+          <li>Alergias o condiciones de salud relevantes</li>
+          <li>Artista favorito o preferido</li>
+          <li>Estado del depósito en cada cita</li>
+        </ul>
+      </div>
+      <div class="db-card">
+        <div class="db-card-tag">Seguimiento</div>
+        <div class="db-card-title">Retención activa</div>
+        <ul class="db-list">
+          <li>Clientes sin visita en +6 meses (reactivar)</li>
+          <li>Recordatorio automático de cuidados post-tattoo</li>
+          <li>Clientes recurrentes identificados</li>
+          <li>Valoraciones y feedback recibido</li>
+          <li>Referencias (quién trajo a quién)</li>
+        </ul>
+      </div>
+      <div class="db-card">
+        <div class="db-card-tag">Valor real</div>
+        <div class="db-card-title">Por qué importa</div>
+        <ul class="db-list">
+          <li>Saber cuánto ha gastado cada cliente en total</li>
+          <li>Detectar a tus mejores clientes fácilmente</li>
+          <li>Personalizar el trato y fidelizar</li>
+          <li>Protección de datos bajo RGPD automática</li>
+          <li>Sin papeles, sin libretas, sin perder info</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 08 ARTISTAS ── -->
+  <div class="slide" data-index="7">
+    <span class="stag">// 07 — Módulo 2</span>
+    <h2 class="h2">GESTIÓN<br/>DE <em>ARTISTAS</em>.</h2>
+    <div class="db-grid">
+      <div class="db-card">
+        <div class="db-card-tag">Cada artista</div>
+        <div class="db-card-title">Su agenda propia</div>
+        <ul class="db-list">
+          <li>Disponibilidad y horarios por artista</li>
+          <li>Días de vacaciones o ausencias</li>
+          <li>Capacidad máxima de sesiones por semana</li>
+          <li>Especialidades y estilos asociados</li>
+          <li>Precio/hora o comisión configurada</li>
+        </ul>
+      </div>
+      <div class="db-card">
+        <div class="db-card-tag">Rendimiento</div>
+        <div class="db-card-title">Métricas claras</div>
+        <ul class="db-list">
+          <li>Ingresos generados por artista en el mes</li>
+          <li>Número de sesiones completadas</li>
+          <li>Horas trabajadas vs horas disponibles</li>
+          <li>Valoración media de sus clientes</li>
+          <li>Tasa de cancelaciones por artista</li>
+        </ul>
+      </div>
+      <div class="db-card">
+        <div class="db-card-tag">Valor real</div>
+        <div class="db-card-title">Control total</div>
+        <ul class="db-list">
+          <li>Tomar decisiones con datos, no intuición</li>
+          <li>Liquidaciones mensuales automáticas</li>
+          <li>Saber qué artista genera más demanda</li>
+          <li>Gestionar altas y bajas de artistas</li>
+          <li>Evitar solapamientos de citas</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 09 TRABAJOS ── -->
+  <div class="slide" data-index="8">
+    <span class="stag">// 08 — Módulo 3</span>
+    <h2 class="h2">GESTIÓN<br/>DE <em>TRABAJOS</em>.</h2>
+    <div class="db-grid">
+      <div class="db-card">
+        <div class="db-card-tag">Cada trabajo</div>
+        <div class="db-card-title">De la idea al resultado</div>
+        <ul class="db-list">
+          <li>Tipo, estilo, zona del cuerpo</li>
+          <li>Referencia visual adjunta</li>
+          <li>Artista asignado y fecha de sesión</li>
+          <li>Número de sesiones necesarias</li>
+          <li>Estado: Presupuestado / En curso / Terminado</li>
+        </ul>
+      </div>
+      <div class="db-card">
+        <div class="db-card-tag">Financiero</div>
+        <div class="db-card-title">Facturación integrada</div>
+        <ul class="db-list">
+          <li>Precio acordado por trabajo</li>
+          <li>Depósito recibido y pendiente</li>
+          <li>Pago final registrado</li>
+          <li>Trabajos con deuda o impagos</li>
+          <li>Resumen mensual de ingresos totales</li>
+        </ul>
+      </div>
+      <div class="db-card">
+        <div class="db-card-tag">Valor real</div>
+        <div class="db-card-title">Visibilidad total</div>
+        <ul class="db-list">
+          <li>Saber qué estilo genera más ingresos</li>
+          <li>Detectar trabajos cancelados y por qué</li>
+          <li>Portafolio digital organizado por trabajo</li>
+          <li>Historial completo de cada pieza realizada</li>
+          <li>Base para decisiones de marketing</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 10 ROADMAP ── -->
+  <div class="slide" data-index="9">
+    <span class="stag">// 09 — Próximos pasos</span>
+    <h2 class="h2">EL CAMINO<br/><em>DESDE AQUÍ</em>.</h2>
+    <div class="roadmap">
+      <div class="rm-step">
+        <div class="rm-num">01</div>
+        <div class="rm-info">
+          <div class="rm-title">Web en producción</div>
+          <div class="rm-desc">La web de OnAir Studio está lista y optimizada para móvil. Publicación en dominio propio y alta en Google Search Console.</div>
+          <span class="rm-tag">Listo para lanzar</span>
+        </div>
+      </div>
+      <div class="rm-step">
+        <div class="rm-num">02</div>
+        <div class="rm-info">
+          <div class="rm-title">Reservas reales conectadas</div>
+          <div class="rm-desc">Activar el backend de reservas: confirmación por email, gestión de depósitos y calendario en tiempo real.</div>
+          <span class="rm-tag">Fase 2</span>
+        </div>
+      </div>
+      <div class="rm-step">
+        <div class="rm-num">03</div>
+        <div class="rm-info">
+          <div class="rm-title">Panel de gestión (CRM)</div>
+          <div class="rm-desc">Implementación del sistema de base de datos: módulos de Clientes, Artistas y Trabajos con panel de control privado.</div>
+          <span class="rm-tag">Fase 3</span>
+        </div>
+      </div>
+      <div class="rm-step">
+        <div class="rm-num">04</div>
+        <div class="rm-info">
+          <div class="rm-title">Automatizaciones</div>
+          <div class="rm-desc">Recordatorios automáticos de cita, aftercare por email, reactivación de clientes inactivos y métricas del estudio.</div>
+          <span class="rm-tag">Fase 4</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /deck -->
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const total  = slides.length;
+  let current  = 0;
+  let startX   = 0;
+  let isDragging = false;
+
+  // ── DOTS ──
+  const dotsEl = document.getElementById('dots');
+  slides.forEach((_, i) => {
+    const d = document.createElement('button');
+    d.className = 'dot' + (i === 0 ? ' active' : '');
+    d.setAttribute('aria-label', `Ir a slide ${i + 1}`);
+    d.style.touchAction = 'manipulation';
+    d.style.webkitTapHighlightColor = 'transparent';
+    d.addEventListener('click', () => goTo(i));
+    dotsEl.appendChild(d);
+  });
+
+  function updateDots() {
+    document.querySelectorAll('.dot').forEach((d, i) => {
+      d.classList.toggle('active', i === current);
+    });
+  }
+
+  function updateCounter() {
+    const n = String(current + 1).padStart(2, '0');
+    const t = String(total).padStart(2, '0');
+    document.getElementById('counter').textContent = `${n} / ${t}`;
+  }
+
+  function updateArrows() {
+    document.getElementById('arrowLeft').classList.toggle('hidden', current === 0);
+    document.getElementById('arrowRight').classList.toggle('hidden', current === total - 1);
+  }
+
+  function goTo(index) {
+    if (index < 0 || index >= total || index === current) return;
+    const prev = slides[current];
+    prev.classList.remove('active');
+    prev.classList.add('exit');
+    setTimeout(() => prev.classList.remove('exit'), 600);
+    current = index;
+    slides[current].classList.add('active');
+    updateDots();
+    updateCounter();
+    updateArrows();
+  }
+
+  function go(dir) { goTo(current + dir); }
+
+  // ── KEYBOARD ──
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); go(1); }
+    if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   { e.preventDefault(); go(-1); }
+  });
+
+  // ── SWIPE / TOUCH ──
+  document.addEventListener('touchstart', e => {
+    startX = e.touches[0].clientX;
+    isDragging = true;
+  }, { passive: true });
+
+  document.addEventListener('touchend', e => {
+    if (!isDragging) return;
+    const dx = e.changedTouches[0].clientX - startX;
+    if (Math.abs(dx) > 50) go(dx < 0 ? 1 : -1);
+    isDragging = false;
+  }, { passive: true });
+
+  // ── MOUSE DRAG ──
+  document.addEventListener('mousedown', e => {
+    startX = e.clientX; isDragging = true;
+  });
+  document.addEventListener('mouseup', e => {
+    if (!isDragging) return;
+    const dx = e.clientX - startX;
+    if (Math.abs(dx) > 60) go(dx < 0 ? 1 : -1);
+    isDragging = false;
+  });
+
+  updateCounter();
+  updateArrows();
+</script>
+</body>
+</html>
