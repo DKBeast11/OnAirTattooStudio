@@ -15,7 +15,11 @@
     --ff-mono:    'DM Mono', monospace;
   }
 
-  html { scroll-behavior: smooth; }
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
 
   body {
     background: var(--ink);
@@ -130,6 +134,7 @@
   /* ─── HERO ─── */
   #hero {
     min-height: 100vh;
+    min-height: 100dvh;
     display: grid;
     grid-template-columns: 1fr 1fr;
     position: relative;
@@ -205,7 +210,9 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: repeat(3, 1fr);
-    height: 100vh; gap: 3px;
+    height: 100vh;
+    height: 100dvh;
+    gap: 3px;
   }
   .mosaic-cell {
     background: var(--graphite);
@@ -478,13 +485,23 @@
     padding: 12px 16px;
     outline: none;
     transition: border-color .2s;
+    -webkit-appearance: none;
     appearance: none;
   }
   .form-input:focus, .form-select:focus, .form-textarea:focus {
     border-color: var(--red);
   }
+  .form-select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888880' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    background-size: 14px;
+    padding-right: 40px;
+    cursor: pointer;
+  }
   .form-input::placeholder { color: var(--mist); }
   .form-textarea { resize: vertical; min-height: 100px; }
+  .file-input { padding: 10px 16px; font-size: .7rem; cursor: pointer; }
   .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 
   /* Mini calendar */
@@ -666,7 +683,96 @@
     .cursor, .cursor-ring { display: none; }
     button, a, input, select, textarea, .filter-btn, .cal-day, .time-slot, .booking-type { cursor: auto; }
     section { padding: 80px 24px; }
-    .gallery-grid { columns: 2 160px; }
+    .gallery-grid { columns: 2 140px; }
+    .gallery-filters {
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 8px;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    .gallery-filters::-webkit-scrollbar { display: none; }
+    .filter-btn { flex-shrink: 0; }
+    .form-row { grid-template-columns: 1fr; }
+    .form-input, .form-select, .form-textarea { font-size: 16px; }
+    .booking-form { padding: 24px 20px; }
+    .booking-layout { gap: 48px; }
+    .time-slots { grid-template-columns: repeat(3, 1fr); }
     footer { grid-template-columns: 1fr; padding: 48px 24px; }
     .section-header { flex-direction: column; align-items: flex-start; gap: 16px; }
+  }
+
+  /* ─── NOTIFICATION ─── */
+  #notification {
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    z-index: 200;
+    background: var(--red);
+    color: var(--cream);
+    padding: 16px 24px;
+    font-family: var(--ff-mono);
+    font-size: .78rem;
+    letter-spacing: .12em;
+    transform: translateY(100px);
+    opacity: 0;
+    transition: all .4s cubic-bezier(.175, .885, .32, 1.275);
+    max-width: 320px;
+    line-height: 1.6;
+    pointer-events: none;
+  }
+  @media (max-width: 600px) {
+    #notification {
+      right: 16px;
+      left: 16px;
+      bottom: 20px;
+      max-width: none;
+    }
+  }
+
+  /* ─── TOUCH INTERACTION ─── */
+  @media (hover: none), (pointer: coarse) {
+    button, a, .filter-btn, .cal-day.available,
+    .time-slot.available, .booking-type, .nav-hamburger,
+    .form-submit, .btn-primary, .btn-ghost, .cal-nav {
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .gallery-overlay {
+      opacity: 1;
+      background: linear-gradient(to top, rgba(10,10,8,.88) 0%, transparent 60%);
+    }
+  }
+
+  /* ─── SAFE AREA (iPhone notch / home bar) ─── */
+  @supports (padding: env(safe-area-inset-top)) {
+    nav {
+      padding-left: calc(48px + env(safe-area-inset-left));
+      padding-right: calc(48px + env(safe-area-inset-right));
+    }
+    @media (max-width: 768px) {
+      nav { padding-left: calc(24px + env(safe-area-inset-left)); padding-right: calc(24px + env(safe-area-inset-right)); }
+      .footer-bottom { padding-bottom: calc(24px + env(safe-area-inset-bottom)); }
+      #notification { bottom: calc(20px + env(safe-area-inset-bottom)); }
+    }
+  }
+
+  /* ─── SMALL SCREENS (≤480px) ─── */
+  @media (max-width: 480px) {
+    .hero-title { font-size: clamp(3.8rem, 14vw, 5.5rem); }
+    .section-title { font-size: clamp(2.4rem, 10vw, 3.5rem); }
+    .booking-type { padding: 14px 16px; gap: 12px; }
+    .type-icon { font-size: 1.1rem; width: 22px; }
+    .type-dur { font-size: .62rem; }
+    .artist-name { font-size: 1.6rem; }
+    .mini-calendar { padding: 14px 12px; }
+    .cal-day { font-size: .68rem; }
+    .booking-form { padding: 18px 14px; }
+    .gallery-grid { columns: 1; }
+    .time-slots { grid-template-columns: repeat(2, 1fr); }
+    section { padding: 60px 16px; }
+    nav { padding: 14px 18px; }
+    .footer-bottom { padding: 20px 18px; font-size: .6rem; }
+    .artist-img-wrap, .artist-portrait { height: 380px; }
   }

@@ -237,12 +237,28 @@ function selectType(el) {
 // ─── SUBMIT ───
 function submitBooking() {
   const type = document.querySelector('.booking-type.selected')?.querySelector('.type-name')?.textContent;
+  const inputs = document.querySelectorAll('.booking-form .form-input[type="text"], .booking-form .form-input[type="email"]');
+  let hasEmpty = false;
+  inputs.forEach(inp => {
+    if (!inp.value.trim()) {
+      inp.style.borderColor = 'var(--red)';
+      hasEmpty = true;
+    } else {
+      inp.style.borderColor = '';
+    }
+  });
   if (!selectedDate || !selectedTime) {
     showNotification('⚠ Selecciona una fecha y hora para continuar.');
     return;
   }
+  if (hasEmpty) {
+    showNotification('⚠ Completa tu nombre, apellido, email y teléfono.');
+    return;
+  }
   const dateStr = `${selectedDate.d} ${MONTHS[selectedDate.m]} ${selectedDate.y}`;
   showNotification(`✓ Reserva recibida\n${type} · ${dateStr} · ${selectedTime}\nRecibirás confirmación en tu email.`);
+  inputs.forEach(inp => { inp.value = ''; inp.style.borderColor = ''; });
+  document.querySelector('.form-textarea').value = '';
 }
 
 function showNotification(msg) {
@@ -254,7 +270,9 @@ function showNotification(msg) {
 }
 
 function scrollToBooking() {
-  document.getElementById('reservas').scrollIntoView({ behavior: 'smooth' });
+  const el = document.getElementById('reservas');
+  const top = el.getBoundingClientRect().top + window.pageYOffset;
+  window.scrollTo({ top, behavior: 'smooth' });
 }
 
 // ─── REVEAL ON SCROLL ───
@@ -268,13 +286,15 @@ revealEls.forEach(el => io.observe(el));
 function toggleMobileNav() {
   const links = document.querySelector('.nav-links');
   const btn   = document.getElementById('navHamburger');
-  links.classList.toggle('open');
+  const isOpen = links.classList.toggle('open');
   btn.classList.toggle('open');
+  document.body.style.overflow = isOpen ? 'hidden' : '';
 }
 document.querySelectorAll('.nav-links a').forEach(link => {
   link.addEventListener('click', () => {
     document.querySelector('.nav-links').classList.remove('open');
     document.getElementById('navHamburger').classList.remove('open');
+    document.body.style.overflow = '';
   });
 });
 
