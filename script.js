@@ -14,81 +14,101 @@ document.addEventListener('mouseup',   () => cursor.style.transform = 'translate
 
 // ─── GALLERY DATA ───
 const galleryItems = [
-  { style:'blackwork', artist:'Mara Solano', title:'Serpiente lunar', img:'https://images.pexels.com/photos/2226010/pexels-photo-2226010.jpeg?w=600&h=800&fit=crop', h:320 },
-  { style:'fineline',  artist:'Mara Solano', title:'Rosa geométrica', img:'https://images.pexels.com/photos/29251827/pexels-photo-29251827.jpeg?w=600&h=600&fit=crop', h:240 },
-  { style:'realism',   artist:'Dani Roca',   title:'Retrato femenino', img:'https://images.pexels.com/photos/2186982/pexels-photo-2186982.jpeg?w=600&h=800&fit=crop', h:400 },
-  { style:'neo-trad',  artist:'Iker Valls',  title:'Koi tradicional', img:'https://images.pexels.com/photos/2134085/pexels-photo-2134085.jpeg?w=600&h=700&fit=crop', h:280 },
-  { style:'geometric', artist:'Mara Solano', title:'Mandala oscuro', img:'https://images.pexels.com/photos/35554899/pexels-photo-35554899.jpeg?w=600&h=700&fit=crop', h:260 },
-  { style:'japanese',  artist:'Iker Valls',  title:'Dragón clásico', img:'https://images.pexels.com/photos/29212049/pexels-photo-29212049.jpeg?w=600&h=800&fit=crop', h:360 },
-  { style:'blackwork', artist:'Dani Roca',   title:'Bosque abstracto', img:'https://images.pexels.com/photos/2126124/pexels-photo-2126124.jpeg?w=600&h=500&fit=crop', h:200 },
-  { style:'fineline',  artist:'Mara Solano', title:'Constellation', img:'https://images.pexels.com/photos/29251828/pexels-photo-29251828.jpeg?w=600&h=700&fit=crop', h:300 },
-  { style:'realism',   artist:'Dani Roca',   title:'Lobo nocturno', img:'https://images.pexels.com/photos/35658331/pexels-photo-35658331.jpeg?w=600&h=800&fit=crop', h:380 },
-  { style:'neo-trad',  artist:'Iker Valls',  title:'Pantera art', img:'https://images.pexels.com/photos/2192557/pexels-photo-2192557.jpeg?w=600&h=700&fit=crop', h:260 },
-  { style:'geometric', artist:'Mara Solano', title:'Sacred geometry', img:'https://images.pexels.com/photos/3295586/pexels-photo-3295586.jpeg?w=600&h=750&fit=crop', h:320 },
-  { style:'japanese',  artist:'Iker Valls',  title:'Hannya mask', img:'https://images.pexels.com/photos/5191123/pexels-photo-5191123.jpeg?w=600&h=800&fit=crop', h:350 },
+  { style:'blackwork', artist:'El Chicano',  title:'Serpiente lunar', img:'https://images.pexels.com/photos/2226010/pexels-photo-2226010.jpeg?w=600&h=800&fit=crop', h:320 },
+  { style:'fineline',  artist:'El Chicano',  title:'Rosa geométrica', img:'https://images.pexels.com/photos/29251827/pexels-photo-29251827.jpeg?w=600&h=600&fit=crop', h:240 },
+  { style:'realism',   artist:'Nyx Line',    title:'Retrato femenino', img:'https://images.pexels.com/photos/2186982/pexels-photo-2186982.jpeg?w=600&h=800&fit=crop', h:400 },
+  { style:'neo-trad',  artist:'Tati Tattoo', title:'Koi tradicional', img:'https://images.pexels.com/photos/2134085/pexels-photo-2134085.jpeg?w=600&h=700&fit=crop', h:280 },
+  { style:'geometric', artist:'El Chicano',  title:'Mandala oscuro', img:'https://images.pexels.com/photos/35554899/pexels-photo-35554899.jpeg?w=600&h=700&fit=crop', h:260 },
+  { style:'japanese',  artist:'Tati Tattoo', title:'Dragón clásico', img:'https://images.pexels.com/photos/29212049/pexels-photo-29212049.jpeg?w=600&h=800&fit=crop', h:360 },
+  { style:'blackwork', artist:'Nyx Line',    title:'Bosque abstracto', img:'https://images.pexels.com/photos/2126124/pexels-photo-2126124.jpeg?w=600&h=500&fit=crop', h:200 },
+  { style:'fineline',  artist:'El Chicano',  title:'Constellation', img:'https://images.pexels.com/photos/29251828/pexels-photo-29251828.jpeg?w=600&h=700&fit=crop', h:300 },
+  { style:'realism',   artist:'Nyx Line',    title:'Lobo nocturno', img:'https://images.pexels.com/photos/35658331/pexels-photo-35658331.jpeg?w=600&h=800&fit=crop', h:380 },
+  { style:'neo-trad',  artist:'Tati Tattoo', title:'Pantera art', img:'https://images.pexels.com/photos/2192557/pexels-photo-2192557.jpeg?w=600&h=700&fit=crop', h:260 },
+  { style:'geometric', artist:'El Chicano',  title:'Sacred geometry', img:'https://images.pexels.com/photos/3295586/pexels-photo-3295586.jpeg?w=600&h=750&fit=crop', h:320 },
+  { style:'japanese',  artist:'Tati Tattoo', title:'Hannya mask', img:'https://images.pexels.com/photos/5191123/pexels-photo-5191123.jpeg?w=600&h=800&fit=crop', h:350 },
 ];
 
-// Render gallery with real tattoo images
+// ─── GALLERY RENDER + FILTER ───
 const grid = document.getElementById('galleryGrid');
-galleryItems.forEach((item, i) => {
-  const cell = document.createElement('div');
-  cell.className = 'gallery-item';
-  cell.dataset.style = item.style;
-  cell.style.height = item.h + 'px';
-  cell.innerHTML = `
-    <div class="gallery-img-mock" style="background-image: url('${item.img}'); background-size: cover; background-position: center; height: 100%;"></div>
-    <div class="gallery-overlay">
-      <div class="gallery-overlay-title">${item.title}</div>
-      <div class="gallery-overlay-meta">${item.artist} · ${item.style}</div>
-    </div>`;
-  grid.appendChild(cell);
-});
 
-// Filter buttons
+function renderGallery(filter = 'all') {
+  const items = filter === 'all' ? galleryItems : galleryItems.filter(i => i.style === filter);
+  grid.innerHTML = '';
+  items.forEach(item => {
+    const cell = document.createElement('div');
+    cell.className = 'gallery-item';
+    cell.dataset.style = item.style;
+    cell.style.height = item.h + 'px';
+    cell.innerHTML = `
+      <div class="gallery-img-mock" style="background-image:url('${item.img}');background-size:cover;background-position:center;height:100%;"></div>
+      <div class="gallery-overlay">
+        <div class="gallery-overlay-title">${item.title}</div>
+        <div class="gallery-overlay-meta">${item.artist} · ${item.style}</div>
+      </div>`;
+    grid.appendChild(cell);
+  });
+}
+
+renderGallery();
+
 document.querySelectorAll('.filter-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-    const filter = btn.dataset.filter;
-    document.querySelectorAll('.gallery-item').forEach(item => {
-      if (filter === 'all' || item.dataset.style === filter) {
-        item.style.display = '';
-      } else {
-        item.style.display = 'none';
-      }
-    });
+    renderGallery(btn.dataset.filter);
   });
+});
+
+// Load more
+document.querySelector('.gallery-load-more a').addEventListener('click', e => {
+  e.preventDefault();
+  showNotification('Ya has visto todos nuestros últimos trabajos.\n¡Síguenos en @onair.studio para más!');
 });
 
 // ─── ARTISTS DATA ───
 const artists = [
   {
-    initials: 'MS',
-    name: 'Mara Solano',
+    initials: 'EC',
+    name: 'El Chicano',
     style: 'Blackwork · Fine Line',
-    bio: 'Formada en Barcelona y Berlín. Especializada en blackwork orgánico y fine line botánico. Sus diseños combinan precisión quirúrgica con sensibilidad poética.',
+    bio: '@elchicano_ink - Especializado en blackwork orgánico y fine line. Sus diseños combinan precisión quirúrgica con sensibilidad poética. Tatuador residente de OnAir.',
     tags: ['Blackwork', 'Fine Line', 'Botánico', 'Geométrico'],
     works: ['Serpiente lunar', 'Rosa geométrica', 'Mandala oscuro'],
+    workImgs: [
+      'https://images.pexels.com/photos/2226010/pexels-photo-2226010.jpeg?w=200&h=200&fit=crop',
+      'https://images.pexels.com/photos/29251827/pexels-photo-29251827.jpeg?w=200&h=200&fit=crop',
+      'https://images.pexels.com/photos/35554899/pexels-photo-35554899.jpeg?w=200&h=200&fit=crop',
+    ],
     image: 'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?w=400&h=400&fit=crop',
     color: '#1e1e1c',
   },
   {
-    initials: 'DR',
-    name: 'Dani Roca',
+    initials: 'NL',
+    name: 'Nyx Line',
     style: 'Realismo · Retrato',
-    bio: 'Autodidacta durante 12 años. Maestro del claroscuro y el retrato hiperrealista. Ha trabajado en estudios de Londres y Nueva York antes de unirse a OnAir.',
+    bio: '@nyxline_ink - Maestra del claroscuro y el retrato hiperrealista. Ha trabajado en estudios de Londres y Nueva York antes de unirse a OnAir. Tatuadora residente.',
     tags: ['Realismo', 'Retrato', 'Claroscuro', 'Wildlife'],
     works: ['Retrato femenino', 'Lobo nocturno', 'Bosque abstracto'],
+    workImgs: [
+      'https://images.pexels.com/photos/2186982/pexels-photo-2186982.jpeg?w=200&h=200&fit=crop',
+      'https://images.pexels.com/photos/35658331/pexels-photo-35658331.jpeg?w=200&h=200&fit=crop',
+      'https://images.pexels.com/photos/2126124/pexels-photo-2126124.jpeg?w=200&h=200&fit=crop',
+    ],
     image: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?w=400&h=400&fit=crop',
     color: '#1c1e1c',
   },
   {
-    initials: 'IV',
-    name: 'Iker Valls',
+    initials: 'TT',
+    name: 'Tati Tattoo',
     style: 'Neo-tradicional · Japonés',
-    bio: 'Con raíces en el tatuaje tradicional americano y japonés, Iker reinterpreta los clásicos con una paleta contemporánea y líneas de fuerza excepcional.',
+    bio: '@tatitattoo.inkk - Con raíces en el tatuaje tradicional americano y japonés. Reinterpreta los clásicos con una paleta contemporánea y líneas de fuerza excepcional.',
     tags: ['Neo-trad', 'Japonés', 'Color', 'Mangas'],
     works: ['Koi tradicional', 'Dragón clásico', 'Hannya mask'],
+    workImgs: [
+      'https://images.pexels.com/photos/2134085/pexels-photo-2134085.jpeg?w=200&h=200&fit=crop',
+      'https://images.pexels.com/photos/29212049/pexels-photo-29212049.jpeg?w=200&h=200&fit=crop',
+      'https://images.pexels.com/photos/5191123/pexels-photo-5191123.jpeg?w=200&h=200&fit=crop',
+    ],
     image: 'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?w=400&h=400&fit=crop',
     color: '#1c1c1e',
   },
@@ -111,9 +131,9 @@ artists.forEach(a => {
     <div class="artist-recent-work">
       <div class="artist-work-title">Últimos trabajos</div>
       <div class="artist-work-grid">
-        ${a.works.map(w => `
-          <div class="work-thumb">
-            <div class="work-thumb-inner">${w.substring(0,6)}…</div>
+        ${a.workImgs.map((img, idx) => `
+          <div class="work-thumb" title="${a.works[idx]}">
+            <div class="work-thumb-inner" style="background-image:url('${img}');background-size:cover;background-position:center;"></div>
           </div>`).join('')}
       </div>
     </div>`;
@@ -152,7 +172,8 @@ function renderCalendar() {
     const isPast   = new Date(currentYear, currentMonth, d) < new Date(today.getFullYear(), today.getMonth(), today.getDate());
     const isSel    = selectedDate && selectedDate.d === d && selectedDate.m === currentMonth && selectedDate.y === currentYear;
     let cls = 'cal-day';
-    if (isBooked || isPast) cls += ' booked';
+    if (isPast) cls += ' past';
+    else if (isBooked) cls += ' booked';
     else cls += ' available';
     if (isToday) cls += ' today';
     if (isSel)   cls += ' selected';
@@ -172,8 +193,10 @@ function nextMonth() {
 }
 
 function selectDay(d) {
-  const isPast   = new Date(currentYear, currentMonth, d) < new Date();
-  if (bookedDays.includes(d) || isPast) return;
+  const now = new Date();
+  const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const isPast = new Date(currentYear, currentMonth, d) < todayStart;
+  if (isPast || bookedDays.includes(d)) return;
   selectedDate = { d, m: currentMonth, y: currentYear };
   renderCalendar();
   renderTimeSlots();
@@ -224,7 +247,7 @@ function submitBooking() {
 
 function showNotification(msg) {
   const n = document.getElementById('notification');
-  n.textContent = msg;
+  n.innerHTML = msg.replace(/\n/g, '<br>');
   n.style.transform = 'translateY(0)';
   n.style.opacity   = '1';
   setTimeout(() => { n.style.transform = 'translateY(100px)'; n.style.opacity = '0'; }, 4500);
@@ -241,5 +264,32 @@ const io = new IntersectionObserver(entries => {
 }, { threshold: 0.08 });
 revealEls.forEach(el => io.observe(el));
 
-// ─── HERO MOSAIC IMAGES ───
-// Images are now loaded directly in HTML with background-image CSS
+// ─── MOBILE NAV ───
+function toggleMobileNav() {
+  const links = document.querySelector('.nav-links');
+  const btn   = document.getElementById('navHamburger');
+  links.classList.toggle('open');
+  btn.classList.toggle('open');
+}
+document.querySelectorAll('.nav-links a').forEach(link => {
+  link.addEventListener('click', () => {
+    document.querySelector('.nav-links').classList.remove('open');
+    document.getElementById('navHamburger').classList.remove('open');
+  });
+});
+
+// ─── ACTIVE NAV ON SCROLL ───
+const navSections = ['galeria', 'artistas', 'reservas', 'contacto']
+  .map(id => document.getElementById(id)).filter(Boolean);
+const navAnchors = document.querySelectorAll('.nav-links a');
+const activeObserver = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const id = e.target.getAttribute('id');
+      navAnchors.forEach(a => {
+        a.classList.toggle('active-nav', a.getAttribute('href') === `#${id}`);
+      });
+    }
+  });
+}, { rootMargin: '-20% 0px -70% 0px' });
+navSections.forEach(s => activeObserver.observe(s));

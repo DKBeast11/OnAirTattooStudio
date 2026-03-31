@@ -3,7 +3,9 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>OnAir — Studio de Tatuajes</title>
+<meta name="description" content="Estudio de tatuajes y piercings en Las Palmas de Gran Canaria. Artistas residentes especializados en blackwork, realismo, neo-tradicional, fine line, japonés y geométrico." />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23c0392b'/%3E%3Ctext x='50' y='78' font-size='68' text-anchor='middle' fill='%23f4f0e6' font-family='Georgia%2Cserif' font-weight='bold'%3EO%3C/text%3E%3C/svg%3E" />
+<title>OnAir Studio · Tatuajes · Las Palmas de Gran Canaria</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
@@ -25,12 +27,15 @@
     <li><a href="#contacto">Contacto</a></li>
   </ul>
   <button class="nav-cta" onclick="scrollToBooking()">Reservar cita</button>
+  <button class="nav-hamburger" id="navHamburger" onclick="toggleMobileNav()" aria-label="Abrir menú">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
 
 <!-- ─── HERO ─── -->
 <section id="hero" style="padding:0;">
   <div class="hero-left">
-    <p class="hero-tag">// Las Palmas · Est. 2014</p>
+    <p class="hero-tag">// Estudio de tatuajes y piercings · Las Palmas</p>
     <h1 class="hero-title">TU<br/>PIEL.<br/><em>NUES</em><br/><em>TRO</em><br/>ARTE.</h1>
     <p class="hero-sub">Tatuajes únicos creados por artistas que viven para el oficio. Cada trazo, una intención.</p>
     <div class="hero-actions">
@@ -173,9 +178,9 @@
         <label class="form-label">Artista preferido</label>
         <select class="form-select">
           <option value="">Sin preferencia</option>
-          <option>Mara Solano — Blackwork · Fine Line</option>
-          <option>Dani Roca — Realism · Portrait</option>
-          <option>Iker Valls — Neo-trad · Japonés</option>
+          <option>El Chicano — Blackwork · Fine Line</option>
+          <option>Nyx Line — Realismo · Retrato</option>
+          <option>Tati Tattoo — Neo-trad · Japonés</option>
         </select>
       </div>
 
@@ -220,7 +225,7 @@
 <footer id="contacto">
   <div class="footer-brand">
     <a href="#hero" class="nav-logo">On<span style="color:var(--red)">AIR</span></a>
-    <p>Studio de tatuajes en Las Palmas de Gran Canaria. Arte que permanece.</p>
+    <p>Estudio de tatuajes y piercings en Las Palmas de Gran Canaria. Arte que permanece.</p>
   </div>
   <div class="footer-col">
     <h4>Navegación</h4>
@@ -241,15 +246,15 @@
   <div class="footer-col">
     <h4>Contacto</h4>
     <ul>
-      <li><a href="#">Calle del Arte, 14 · Las Palmas</a></li>
+      <li><a href="#">Calle Menéndez y Pelayo, 23 · 35006 Las Palmas</a></li>
       <li><a href="#">Lun–Sáb 11:00–20:00</a></li>
-      <li><a href="#">info@inkvault.es</a></li>
-      <li><a href="#">@inkvault.studio</a></li>
+      <li><a href="mailto:info@onair.studio">info@onair.studio</a></li>
+      <li><a href="https://www.instagram.com/onair.studio" target="_blank" rel="noopener noreferrer">@onair.studio</a></li>
     </ul>
   </div>
 </footer>
 <div class="footer-bottom">
-  <span>© 2025 OnAir Studio</span>
+  <span>© 2026 OnAir Studio</span>
   <span>Las Palmas · España</span>
 </div>
 
