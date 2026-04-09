@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#050505" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="description" content="Estudio de tatuajes y piercings en Las Palmas. Blackwork, realismo, neo-trad, fine line, japonés, geométrico. Calle Menéndez y Pelayo, 23." />
+<!-- Open Graph / WhatsApp / Social -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://onair.tattoo" />
+<meta property="og:title" content="OnAir Studio · Tatuajes y Piercings" />
+<meta property="og:description" content="Tres artistas residentes. Un estudio. Tinta de verdad. Las Palmas de Gran Canaria." />
+<meta property="og:image" content="https://onair.tattoo/assets/og-image.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:locale" content="es_ES" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="OnAir Studio · Tatuajes y Piercings" />
+<meta name="twitter:description" content="Tres artistas residentes. Un estudio. Tinta de verdad." />
+<meta name="twitter:image" content="https://onair.tattoo/assets/og-image.png" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23ff1a1a'/%3E%3Ctext x='50' y='78' font-size='68' text-anchor='middle' fill='%23d4cfc6' font-family='Georgia%2Cserif' font-weight='bold'%3EO%3C/text%3E%3C/svg%3E" />
+<title>OnAir Studio · Tatuajes · Las Palmas de Gran Canaria</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Metal+Mania&family=Bebas+Neue&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="v2.css" />
+</head>
+<body>
+
+<!-- SVG FILTER FOR GRAIN -->
+<svg style="position:absolute;width:0;height:0;">
+  <filter id="grain">
+    <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/>
+  </filter>
+</svg>
+
+<!-- CUSTOM CURSOR -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="nav-logo"><span class="logo-on">On</span><span class="logo-air">AIR</span></a>
+  <ul class="nav-links">
+    <li><a href="#galeria">Galeria</a></li>
+    <li><a href="#artistas">Artistas</a></li>
+    <li><a href="#reservas">Reservas</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+  </ul>
+  <a href="#reservas" class="nav-cta">Reservar cita</a>
+  <button class="nav-hamburger" id="navHamburger" aria-label="Abrir menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE NAV OVERLAY -->
+<div class="mobile-nav-overlay" id="mobileNavOverlay">
+  <ul class="mobile-nav-links">
+    <li><a href="#galeria">Galeria</a></li>
+    <li><a href="#artistas">Artistas</a></li>
+    <li><a href="#reservas">Reservas</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+    <li><a href="#reservas" class="mobile-nav-cta">Reservar cita</a></li>
+  </ul>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <!-- Neon hero background image — swapped by CSS media query -->
+  <picture class="hero-bg" aria-hidden="true">
+    <source media="(max-width: 768px)" srcset="assets/hero-mobile.png" />
+    <img id="neonLogoImg" class="neon-logo-img" src="assets/hero-desktop.png" alt="" loading="eager" />
+  </picture>
+  <!-- Ember particles overlay -->
+  <div class="ember-overlay" aria-hidden="true"></div>
+  <!-- Dark gradient overlay for text readability -->
+  <div class="hero-overlay" aria-hidden="true"></div>
+  <div class="hero-content">
+    <p class="hero-tag">// Tatuajes y piercings · Las Palmas de Gran Canaria</p>
+    <h1 class="hero-title">TU PIEL.<br/>NUESTRO ARTE.</h1>
+    <p class="hero-sub">Tres artistas residentes. Un estudio. Tinta de verdad.</p>
+    <div class="hero-actions">
+      <a href="#galeria" class="btn-primary">Ver trabajos</a>
+      <a href="#reservas" class="btn-ghost">Hacer reserva</a>
+    </div>
+  </div>
+  <div class="hero-scroll-hint">
+    <div class="scroll-line"></div>
+    <span>scroll</span>
+  </div>
+</section>
+
+<!-- GALERIA -->
+<section id="galeria">
+  <div class="section-header reveal">
+    <p class="section-tag">// 01 — Lo que sale de aquí</p>
+    <h2 class="section-title">GALERIA</h2>
+  </div>
+  <div class="gallery-filters reveal">
+    <button class="filter-btn active" data-filter="all">Todos</button>
+    <button class="filter-btn" data-filter="blackwork">Blackwork</button>
+    <button class="filter-btn" data-filter="fineline">Fine Line</button>
+    <button class="filter-btn" data-filter="realism">Realismo</button>
+    <button class="filter-btn" data-filter="neo-trad">Neo-Trad</button>
+    <button class="filter-btn" data-filter="geometric">Geometrico</button>
+    <button class="filter-btn" data-filter="japanese">Japones</button>
+  </div>
+  <div class="gallery-grid reveal" id="galleryGrid"></div>
+</section>
+
+<!-- ARTISTAS -->
+<section id="artistas">
+  <div class="section-header reveal">
+    <p class="section-tag">// 02 — Quién tatúa</p>
+    <h2 class="section-title">ARTISTAS</h2>
+  </div>
+  <div id="artistBands"></div>
+</section>
+
+<!-- RESERVAS -->
+<section id="reservas">
+  <div class="section-header reveal">
+    <p class="section-tag">// 03 — Pide cita</p>
+    <h2 class="section-title">PIDE CITA</h2>
+  </div>
+  <form class="booking-form reveal" id="bookingForm" onsubmit="return false;">
+    <div class="form-grid">
+      <div class="form-group">
+        <label class="form-label" for="bookName">Nombre</label>
+        <input class="form-input" type="text" id="bookName" placeholder="Tu nombre completo" required />
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="bookEmail">Email</label>
+        <input class="form-input" type="email" id="bookEmail" placeholder="email@ejemplo.com" required />
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="bookPhone">Telefono</label>
+        <input class="form-input" type="tel" id="bookPhone" placeholder="+34 600 000 000" />
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="bookArtist">Artista</label>
+        <select class="form-input form-select" id="bookArtist">
+          <option value="">Sin preferencia</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="bookStyle">Estilo</label>
+        <select class="form-input form-select" id="bookStyle">
+          <option value="">Elige un estilo</option>
+          <option value="blackwork">Blackwork</option>
+          <option value="fineline">Fine Line</option>
+          <option value="realism">Realismo</option>
+          <option value="neo-trad">Neo-Tradicional</option>
+          <option value="geometric">Geometrico</option>
+          <option value="japanese">Japones</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="bookDate">Fecha</label>
+        <input class="form-input" type="date" id="bookDate" required />
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="bookTime">Hora</label>
+        <select class="form-input form-select" id="bookTime" required>
+          <option value="">Elige fecha primero</option>
+        </select>
+      </div>
+      <div class="form-group form-group-full">
+        <label class="form-label" for="bookMsg">Mensaje</label>
+        <textarea class="form-input form-textarea" id="bookMsg" rows="5" placeholder="Qué quieres, dónde, qué tamaño. Si tienes referencias, mándalas."></textarea>
+      </div>
+    </div>
+    <button type="submit" class="btn-submit" id="bookSubmit">ENVIAR</button>
+  </form>
+</section>
+
+<!-- FOOTER -->
+<footer id="contacto">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <a href="#hero" class="footer-logo"><span class="logo-on">On</span><span class="logo-air">AIR</span></a>
+      <p class="footer-tagline">Estudio de tatuajes y piercings</p>
+      <p class="footer-addr">Calle Menendez y Pelayo, 23<br/>Las Palmas de Gran Canaria 35006</p>
+    </div>
+    <div class="footer-col">
+      <h4>Horario</h4>
+      <p>Lunes – Sabado<br/>11:00 – 20:00</p>
+    </div>
+    <div class="footer-col">
+      <h4>Contacto</h4>
+      <p><a href="tel:+34928000000">+34 928 000 000</a></p>
+      <p><a href="mailto:info@onair.studio">info@onair.studio</a></p>
+      <p><a href="https://www.instagram.com/onairtattoostudio" target="_blank" rel="noopener noreferrer">@onairtattoostudio</a></p>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <p><a href="#">Aviso legal</a></p>
+      <p><a href="#">Politica de privacidad</a></p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>&copy; 2026 OnAir Studio</span>
+    <span>Las Palmas · Espana</span>
+  </div>
+</footer>
+
+<!-- NOTIFICATION -->
+<div id="notification"></div>
+
+<script src="v2.js"></script>
+</body>
+</html>

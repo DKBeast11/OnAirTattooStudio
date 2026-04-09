@@ -1,0 +1,43 @@
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: onair
+      POSTGRES_USER: onair
+      POSTGRES_PASSWORD: onair_studio_2024
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./api/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+      - ./api/seed.sql:/docker-entrypoint-initdb.d/02-seed.sql
+
+  api:
+    build: ./api
+    restart: unless-stopped
+    ports:
+      - "3001:3001"
+    environment:
+      DATABASE_URL: postgres://onair:onair_studio_2024@db:5432/onair
+      PORT: 3001
+      ADMIN_PASSWORD: onair2024
+    depends_on:
+      - db
+
+  minio:
+    image: minio/minio:latest
+    restart: unless-stopped
+    command: server /data --console-address ":9001"
+    ports:
+      - "9040:9000"
+      - "9041:9001"
+    environment:
+      MINIO_ROOT_USER: onair
+      MINIO_ROOT_PASSWORD: onair_minio_2024
+    volumes:
+      - minio_data:/data
+
+volumes:
+  pgdata:
+  minio_data:

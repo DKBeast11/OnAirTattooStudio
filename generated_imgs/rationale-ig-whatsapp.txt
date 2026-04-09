@@ -1,0 +1,147 @@
+RATIONALE — Instagram Post: Alerta WhatsApp VBS Malware
+=========================================================
+Minery Report | Abril 2026
+
+CONTEXTO
+--------
+Microsoft alertó el 1 de abril de 2026 sobre una campaña activa que
+distribuye malware VBS (Visual Basic Script) a través de mensajes de
+WhatsApp. Los scripts inician una cadena de infección multi-etapa que
+usa utilidades legítimas de Windows renombradas y payloads alojados en
+servicios cloud confiables (AWS, Tencent Cloud, Backblaze B2).
+
+Fuente: The Hacker News, 01/04/2026.
+
+
+SISTEMA DE GRID — CÓMO SE USÓ
+------------------------------
+El grid define zonas espaciales que cumplen DOS funciones simultáneas:
+
+  1. GUÍAN LA GENERACIÓN DE IMAGEN → se traducen a instrucciones
+     posicionales en el prompt de Nano Banana Pro (Gemini 3 Pro Image).
+
+  2. DEFINEN ZONAS CSS → indican dónde es seguro superponer texto HTML
+     y dónde no (feature = no tocar, clear = zona segura).
+
+Grid aplicado (4 columnas × 5 filas):
+
+  ┌──────────────────────────────────────────────┐
+  │              TOP STRIP (0-8%)                 │
+  │  Negro puro, borde superior                  │
+  ├──────────────┬───────────────────────────────┤
+  │  HEADER      │  HEADER DERECHA               │
+  │  (8-20%h)    │  (8-20%h)                     │
+  │  Logo MR     │  Zona clear: texto            │
+  │  top-left    │  "ALERTA CIBERSEGURIDAD"      │
+  │  8-50% w     │  50-92% w                     │
+  ├──────────────┴───────────────────────────────┤
+  │           CENTRO VISUAL (20-70%h)            │
+  │           8-92% ancho                        │
+  │                                              │
+  │   WhatsApp roto + tentáculos rojos VBS       │
+  │   + escudo dorado de alerta                  │
+  │   + código binario + glitch                  │
+  │   = ZONA FEATURE (no superponer HTML)        │
+  │                                              │
+  ├──────────────────────────────────────────────┤
+  │         ZONA HEADLINE (70-88%h)              │
+  │         Degradado natural a negro            │
+  │         ZONA CLEAR: texto headline           │
+  │         "MALWARE VÍA WHATSAPP"               │
+  ├──────────────────────────────────────────────┤
+  │         BOTTOM BAR (88-100%h)                │
+  │         Negro puro + línea dorada sutil      │
+  │         ZONA CLEAR: "mineryreport.com"       │
+  └──────────────────────────────────────────────┘
+
+
+TRADUCCIÓN GRID → PROMPT
+------------------------
+El grid NO crea paneles visuales. Se traduce a instrucciones de
+composición espacial en lenguaje natural:
+
+  - "In the top-left corner, seamlessly integrated..."  ← [header, col 1]
+  - "In the center, a large cracked WhatsApp icon..."   ← [centro visual]
+  - "The bottom 20% gradually darkens to black..."      ← [headline + footer]
+
+La clave es usar palabras como "seamlessly", "naturally", "one continuous
+scene" para evitar que el modelo genere un collage de paneles separados.
+
+
+TRADUCCIÓN GRID → CSS
+---------------------
+Cada zona genera su posicionamiento CSS:
+
+  .ig-post { position: relative; width: 1080px; height: 1080px; }
+  .ig-post__logo    { position: absolute; top: 8%;  left: 8%;  }
+  .ig-post__alert   { position: absolute; top: 8%;  left: 50%; width: 42%; }
+  .ig-post__headline{ position: absolute; top: 70%; left: 8%;  width: 84%; }
+  .ig-post__footer  { position: absolute; top: 88%; left: 8%;  width: 84%; }
+
+  /* Zonas feature = NO colocar contenido HTML encima */
+  /* Zonas clear = SEGURO para texto, botones, CTAs */
+
+
+ITERACIONES
+-----------
+1. Primera generación: grid correcto pero imagen tipo collage con paneles
+   visibles y bordes entre secciones.
+
+2. Corrección: se reformuló el prompt enfatizando "ONE seamless scene,
+   NOT a collage, NO panels" → resultado cohesivo.
+
+3. Edit con referencia: se usó el logo real de Minery Report (extraído de
+   pitch-deck-socu.html) como referenceImage en edit_image para reemplazar
+   el logo aproximado por el exacto.
+
+4. Corrección de color: el logo generado tenía fondo navy blue dentro del
+   diamante → se editó para usar negro puro #171714.
+
+
+PALETA DE COLORES
+-----------------
+  #171714  — Negro puro (fondo dominante, interior del diamante del logo)
+  #FFC950  — Dorado Minery (acentos, círculos del logo, escudo, binario)
+  #25D366  — Verde WhatsApp (icono central, crackeado)
+  #C0392B  — Rojo malicioso (tentáculos VBS, código infectado)
+
+
+APRENDIZAJES PARA EL SKILL
+---------------------------
+1. El grid debe guiar composición, NO crear paneles. El prompt necesita
+   instrucciones explícitas anti-collage.
+
+2. ⚠️ REGLA CRÍTICA — REFERENCIAS DE ARCHIVO OBLIGATORIAS PARA LOGOS:
+   Es IMPOSIBLE replicar un logo o ilustración de marca solo con
+   descripción textual. El modelo siempre generará una aproximación,
+   nunca una copia exacta. La descripción "4 círculos dorados en un
+   diamante conectados por curvas" produjo un símbolo de infinito,
+   luego un patrón de 4 puntos sin curvas, etc.
+
+   SOLUCIÓN OBLIGATORIA: el skill DEBE exigir un archivo de referencia
+   (PNG/SVG) para cualquier elemento de marca. El flujo correcto es:
+
+     a) generate_image → genera la escena con un placeholder aproximado
+     b) edit_image + referenceImages:["/ruta/al/logo.png"] → reemplaza
+        el placeholder por el logo real usando la referencia de archivo
+
+   Esto aplica a: logos, isologos, iconos de marca, ilustraciones
+   propietarias, mascotas, cualquier elemento visual que deba ser
+   exacto y reconocible.
+
+   Sin referencia de archivo → el resultado SIEMPRE será incorrecto
+   para elementos de identidad de marca.
+
+3. Los colores de marca deben especificarse como hex + nombre descriptivo
+   Y reforzarse con "NO navy blue", "NO other colors" para evitar
+   desviaciones del modelo. Especial atención a colores dentro de
+   elementos del logo — el modelo tiende a insertar navy blue en
+   fondos oscuros incluso cuando se especifica negro puro.
+
+4. La iteración edit_image + continue_editing permite correcciones
+   quirúrgicas sin regenerar toda la imagen.
+
+5. El skill debe incluir un paso de validación de marca: antes de dar
+   por terminada una imagen con elementos de identidad, verificar
+   visualmente que el logo coincide con la referencia y que los
+   colores no se han desviado.

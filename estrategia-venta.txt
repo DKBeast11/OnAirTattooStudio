@@ -1,0 +1,119 @@
+ESTRATEGIA DE VENTA — OnAir Tattoo Studio
+==========================================
+
+EL MENSAJE QUE ENTIENDE UN TATUADOR
+------------------------------------
+
+Lo que NO les dices:
+"Os he montado una plataforma con backend en Hono.js, PostgreSQL, sistema de reservas con slots dinámicos, panel admin con auth..."
+
+Lo que SÍ les dices:
+"Os he montado todo para que os encuentren en Google, os reserven citas sin que tengáis que contestar WhatsApps, y parezcáis el estudio más profesional de Las Palmas. Y con el Kit Digital del Gobierno, no os cuesta ni un euro montarlo."
+
+
+LA REUNIÓN — ESTRUCTURA EN 15 MINUTOS
+--------------------------------------
+
+1. EL DOLOR (2 min)
+Preguntas que les haces para que ellos mismos digan el problema:
+- "¿Cuántos mensajes de Instagram/WhatsApp recibís al día preguntando precios y disponibilidad?"
+- "¿Cuántos clientes perdéis porque no contestáis a tiempo?"
+- "Si alguien busca 'tatuajes Las Palmas' en Google, ¿salís vosotros?"
+
+La respuesta va a ser: muchos, bastantes, no.
+
+2. LA SOLUCIÓN — Demo en vivo (5 min)
+Les enseñas la web en su móvil (no en portátil, ellos viven en el móvil):
+- "Mira, un cliente os busca, llega aquí, ve vuestros trabajos, elige artista, y reserva cita. Sin que hagáis nada."
+- "Y vosotros lo veis aquí" → enseñas el panel admin
+- "Aparecéis en Google, en Maps, con reseñas. Cuando alguien busque 'tattoo Las Palmas', salís vosotros."
+
+3. EL GANCHO — Kit Digital (3 min)
+"¿Sabéis lo que es el Kit Digital? El Gobierno da hasta 3.000€ a negocios pequeños para digitalizarse. Vosotros encajáis perfecto. Yo me encargo del papeleo, a vosotros no os cuesta nada montarlo."
+
+La palabra mágica es GRATIS. Aunque luego haya mantenimiento, la barrera de entrada desaparece.
+
+4. EL PRECIO (3 min)
+
+  Setup (web, reservas, admin, Google Maps, fotos) → 0€ (Kit Digital paga)
+  Mensual (hosting, soporte, actualizaciones, SEO) → 69€/mes (ellos pagan)
+
+Y rematas con:
+"69€ al mes. Un tatuaje pequeño. Si la web os trae UN cliente al mes, ya os sale gratis."
+
+5. EL CIERRE (2 min)
+No preguntes "¿qué os parece?" — eso abre debate. Pregunta:
+"Solo necesito que me paséis el certificado de autónomos y el DNI para tramitar el Kit Digital. ¿Me lo podéis mandar esta semana?"
+
+Asumes la venta. El siguiente paso es burocrático, no decisional.
+
+
+SERVICIOS — PAQUETE COMPLETO
+------------------------------
+
+Incluido en el setup (Kit Digital paga):
+- Web profesional con galería de trabajos
+- Sistema de reservas online (se acabó el WhatsApp para citas)
+- Panel de administración (gestionar citas, ver agenda)
+- Perfil optimizado en Google Maps + Google Business
+- SEO local básico ("tatuajes Las Palmas de Gran Canaria")
+- Certificado SSL + dominio
+
+Incluido en el mantenimiento (69€/mes):
+- Hosting y backups
+- Soporte técnico (cambios de fotos, horarios, textos)
+- Gestión de Google Reviews (les enseñas a pedir reseñas)
+- Actualizaciones de seguridad
+- Informe mensual (visitas, reservas, posición en Google)
+
+Upsells futuros (cuando estén contentos):
+- Google Ads local → +150€/mes
+- Gestión de Instagram/redes → +200€/mes
+- WhatsApp Business API (confirmaciones automáticas) → +200€ one-time
+- Email marketing (promos, flash days) → +100€/mes
+- Fotografía profesional de trabajos → +150€/sesión
+
+
+OBJECIONES Y RESPUESTAS
+-------------------------
+
+"Ya tenemos Instagram"
+→ "Instagram está genial para enseñar, pero no para que te reserven. ¿Cuántas veces os escriben 'precio?' y no vuelven a contestar?"
+
+"No necesitamos web"
+→ "¿Habéis buscado 'tatuajes Las Palmas' en Google? Vuestros competidores sí tienen. El cliente que busca ahí es el que tiene dinero y está listo."
+
+"69€ al mes es caro"
+→ "Es un tatuaje pequeño al mes. Si la web os trae un solo cliente, ya habéis ganado 200-500€. ¿Cuánto os cuesta NO estar en Google?"
+
+"Ya nos va bien con el boca a boca"
+→ "El boca a boca es increíble. Esto es el boca a boca digital — la reseña de Google es la recomendación del 2026."
+
+"No entendemos de tecnología"
+→ "Por eso estoy yo. Vosotros tatuáis, yo me encargo de lo digital. No tenéis que tocar nada que no queráis."
+
+
+KIT DIGITAL — DATOS CLAVE
+---------------------------
+
+Segmento: III (0 a <3 empleados)
+Bono máximo: 3.000€
+Categoría "Sitio web y presencia en internet": hasta 2.000€
+Categoría "Gestión de procesos" (reservas/admin): hasta 2.000€
+Requisitos del cliente: autónomo con 6+ meses, al corriente con Hacienda y SS
+
+Más info: https://www.red.es/es/iniciativas/proyectos/kit-digital
+
+
+PRICING ALTERNATIVO (sin Kit Digital)
+--------------------------------------
+
+Opción A — "Llave en mano":
+  Setup: 990€
+  Mantenimiento: 69€/mes
+
+Opción B — "Entrada mínima" (si hay resistencia):
+  Setup: 490€
+  Mantenimiento: 99€/mes
+
+La opción B existe solo para anclar la A. 490 + 99/mes = en 17 meses pagaron más.
